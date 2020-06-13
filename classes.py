@@ -28,8 +28,8 @@ class Ship:
         self.x = x
         self.y = y
         self.health = health
-        self.ship_look = None
-        self.laser_look = RED_LASER
+        self.ship_img = None
+        self.laser_img = None
         self.lasers = []
         self.cool_down_counter = 0
 
@@ -81,7 +81,6 @@ class Player(Ship):
         # Le mask sert a parcourir les images pour détecter les pixels effectifs des png sur 
         # la surface pour une meilleur gestion des impacts
         self.mask = pygame.mask.from_surface(self.ship_look)
-        self.mask = pygame.mask.from_surface(self.ship_look)
         self.max_health = health
 
     # Fonction pour Render le vaisseau sur la fenêtre de jeu (Overxrite celle du parent)
@@ -119,10 +118,11 @@ class Enemy(Ship):
                 "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
                 }
     # Constructeur
-    def __init__(self, x, y, health=100):
+    def __init__(self, x, y, color, health=100):
         super().__init__(x, y, health)
-        self.ship_img, self.laser_img = self.COLOR_MAP[color]
-        self.mask = pygame.mask.from_surface(self.ship_img)
+        self.ship_look, self.laser_look = self.COLOR_MAP[color]
+        self.mask = pygame.mask.from_surface(self.ship_look)
+        self.max_health = 100
 
     # Fait de tirer
     def shoot(self):
@@ -163,3 +163,32 @@ class Laser:
     # Vérification si collision
     def collision(self, obj):
         return collide(self, obj)
+
+class button():
+    def __init__(self, color, x, y, width, height, text=''):
+        self.color = color
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.text = text
+
+    def draw(self,win,outline=None):
+        #Call this method to draw the button on the screen
+        if outline:
+            pygame.draw.rect(win, outline, (self.x-2,self.y-2,self.width+4,self.height+4),0)
+            
+        pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
+        
+        if self.text != '':
+            font = pygame.font.SysFont('comicsans', 60)
+            text = font.render(self.text, 1, (0,0,0))
+            win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
+
+    def isOver(self, pos):
+        #Pos is the mouse position or a tuple of (x,y) coordinates
+        if pos[0] > self.x and pos[0] < self.x + self.width:
+            if pos[1] > self.y and pos[1] < self.y + self.height:
+                return True
+            
+        return False
