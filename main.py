@@ -17,6 +17,10 @@ pygame.display.set_caption("Doom Space")
 # Background
 BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
 
+# Bonus
+life_bonus = 0
+dmg_bonus = 0
+
 def main() :
     # print("Tout marche !")
     # moe = Player(100, 100)
@@ -121,19 +125,41 @@ def main() :
         player.move_lasers(-laser_vel, enemies)
 
 def select_ship() :
-    print("in select menu")
+    # print(getScores())
     main_font = pygame.font.SysFont("comicsans", 70)
+    back_font = pygame.font.SysFont("comicsans", 30)
     run = True
     while run:
         WIN.blit(BG, (0,0))
-        title_label = main_font.render("Select ship Menu", 1, (255,255,255))
+        title_label = main_font.render("Select Ship Menu", 1, (255,255,255))
+        back_label = back_font.render("Click mouse to go back to main menu", 1, (255,255,255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 120))
+        WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 600))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                main()
+                main_menu()
+    pygame.quit()
+
+def select_bonus() :
+    # print("in bonus menu")
+    main_font = pygame.font.SysFont("comicsans", 70)
+    back_font = pygame.font.SysFont("comicsans", 30)
+    run = True
+    while run:
+        WIN.blit(BG, (0,0))
+        title_label = main_font.render("Select Bonus Menu", 1, (255,255,255))
+        back_label = back_font.render("Click mouse to go back to main menu", 1, (255,255,255))
+        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 120))
+        WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 600))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main_menu()
     pygame.quit()
 
 def main_menu():
@@ -144,8 +170,10 @@ def main_menu():
         WIN.blit(BG, (0,0))
         title_label = title_font.render("Press the mouse to begin...", 1, (255,255,255))
         select_label = second_font.render("Press A to select a ship.", 1, (255,255,255))
+        bonus_label = second_font.render("Press E to select bonuses.", 1, (255,255,255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 250))
         WIN.blit(select_label, (WIDTH/2 - select_label.get_width()/2, 400))
+        WIN.blit(bonus_label, (WIDTH/2 - bonus_label.get_width()/2, 550))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -153,8 +181,10 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 main()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
+                if event.key == pygame.K_q:
                     select_ship()
+                if event.key == pygame.K_e:
+                    select_bonus()
     pygame.quit()
 
 
