@@ -5,19 +5,29 @@ from functions import collide
 # Taille de l'écran du jeu
 WIDTH, HEIGHT = 750, 750
 
-# Chargement des images des vaisseaux
-RED_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
-GREEN_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_green_small.png"))
-BLUE_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_blue_small.png"))
+# Declaration de la taille du screen 
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Space Shooter Tutorial")
 
-# Vaisseaux du joueur
-YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_yellow.png"))
+# Load images
+RED_ENEMY = pygame.image.load(os.path.join("assets", "cacodemon.png"))
+AFRIT_ENEMY = pygame.image.load(os.path.join("assets", "Afrit.png"))
+SOUL_ENEMY = pygame.image.load(os.path.join("assets", "lostsoul.png"))
+
+# Player player
+YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "ship.png"))
 
 # Lasers
-RED_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_red.png"))
-GREEN_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_green.png"))
-BLUE_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_blue.png"))
-YELLOW_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_yellow.png"))
+RED_LASER = pygame.image.load(os.path.join("assets", "laser1.png"))
+GREEN_LASER = pygame.image.load(os.path.join("assets", "laser1.png"))
+BLUE_LASER = pygame.image.load(os.path.join("assets", "laser1.png"))
+YELLOW_LASER = pygame.image.load(os.path.join("assets", "bfg.png"))
+
+# Background
+BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background.jpg")), (WIDTH, HEIGHT))
+pygame.mixer.init()
+
+son = pygame.mixer.Sound('doom.wav')
 
 # Classe pour les vaisseaux
 class Ship:
@@ -114,9 +124,9 @@ class Enemy(Ship):
 
     # Différentes apparences des vaisseaux
     COLOR_MAP = {
-                "red": (RED_SPACE_SHIP, RED_LASER),
-                "green": (GREEN_SPACE_SHIP, GREEN_LASER),
-                "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
+                "red": (RED_ENEMY, RED_LASER),
+                "green": (AFRIT_ENEMY, GREEN_LASER),
+                "blue": (SOUL_ENEMY, BLUE_LASER)
                 }
     # Constructeur
     def __init__(self, x, y, color, health=100):
