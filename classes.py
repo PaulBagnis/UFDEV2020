@@ -5,7 +5,7 @@ from functions import collide
 # Taille de l'écran du jeu
 WIDTH, HEIGHT = 750, 750
 
-# Declaration de la taille du screen 
+# Declaration de la taille du screen
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Shooter Tutorial")
 
@@ -13,6 +13,10 @@ pygame.display.set_caption("Space Shooter Tutorial")
 RED_ENEMY = pygame.image.load(os.path.join("assets", "cacodemon.png"))
 AFRIT_ENEMY = pygame.image.load(os.path.join("assets", "Afrit.png"))
 SOUL_ENEMY = pygame.image.load(os.path.join("assets", "lostsoul.png"))
+
+A_SHIP = pygame.image.load(os.path.join("assets", "s1.png"))
+B_SHIP = pygame.image.load(os.path.join("assets", "s2.png"))
+C_SHIP = pygame.image.load(os.path.join("assets", "s3.png"))
 
 # Player player
 YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "ship.png"))
@@ -24,12 +28,15 @@ BLUE_LASER = pygame.image.load(os.path.join("assets", "laser1.png"))
 YELLOW_LASER = pygame.image.load(os.path.join("assets", "bfg.png"))
 
 # Background
-BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background.jpg")), (WIDTH, HEIGHT))
+BG = pygame.transform.scale(pygame.image.load(
+    os.path.join("assets", "background.jpg")), (WIDTH, HEIGHT))
 pygame.mixer.init()
 
 son = pygame.mixer.Sound('doom.wav')
 
 # Classe pour les vaisseaux
+
+
 class Ship:
     COOLDOWN = 30
 
@@ -73,7 +80,7 @@ class Ship:
             elif laser.collision(obj):
                 obj.health -= 10
                 self.lasers.remove(laser)
-    
+
     # Getters // Setters
     def get_width(self):
         return self.ship_look.get_width()
@@ -82,13 +89,15 @@ class Ship:
         return self.ship_look.get_height()
 
 # Classe pour le joueur
+
+
 class Player(Ship):
     # Constructeur
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
         self.ship_look = YELLOW_SPACE_SHIP
         self.laser_look = YELLOW_LASER
-        # Le mask sert a parcourir les images pour détecter les pixels effectifs des png sur 
+        # Le mask sert a parcourir les images pour détecter les pixels effectifs des png sur
         # la surface pour une meilleur gestion des impacts
         self.mask = pygame.mask.from_surface(self.ship_look)
         self.max_health = health
@@ -114,8 +123,10 @@ class Player(Ship):
 
     # Barre de vie du joueur
     def healthbar(self, window):
-        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_look.get_height() + 10, self.ship_look.get_width(), 10))
-        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_look.get_height() + 10, self.ship_look.get_width() * (self.health/self.max_health), 10))
+        pygame.draw.rect(window, (255, 0, 0), (self.x, self.y +
+                                               self.ship_look.get_height() + 10, self.ship_look.get_width(), 10))
+        pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.ship_look.get_height() +
+                                               10, self.ship_look.get_width() * (self.health/self.max_health), 10))
 
 
 # Classe pour les vaisseaux hostiles
@@ -124,11 +135,16 @@ class Enemy(Ship):
 
     # Différentes apparences des vaisseaux
     COLOR_MAP = {
-                "red": (RED_ENEMY, RED_LASER),
-                "green": (AFRIT_ENEMY, GREEN_LASER),
-                "blue": (SOUL_ENEMY, BLUE_LASER)
-                }
+        "red": (RED_ENEMY, RED_LASER),
+        "green": (AFRIT_ENEMY, GREEN_LASER),
+        "blue": (SOUL_ENEMY, BLUE_LASER),
+        "a": (A_SHIP, RED_LASER),
+        "b": (B_SHIP, GREEN_LASER),
+        "c": (C_SHIP, BLUE_LASER)
+    }
+
     # Constructeur
+
     def __init__(self, x, y, color, health=100):
         super().__init__(x, y, health)
         self.ship_look, self.laser_look = self.COLOR_MAP[color]
@@ -144,12 +160,15 @@ class Enemy(Ship):
 
     # Barre de vie des ennemis
     def healthbar(self, window):
-        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_look.get_height() + 10, self.ship_look.get_width(), 10))
-        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_look.get_height() + 10, self.ship_look.get_width() * (self.health/self.max_health), 10))
+        pygame.draw.rect(window, (255, 0, 0), (self.x, self.y +
+                                               self.ship_look.get_height() + 10, self.ship_look.get_width(), 10))
+        pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.ship_look.get_height() +
+                                               10, self.ship_look.get_width() * (self.health/self.max_health), 10))
 
     # Méthode pour bouger
     def move(self, vel):
         self.y += vel
+
 
 class Laser:
     # Constructeurs
@@ -175,6 +194,7 @@ class Laser:
     def collision(self, obj):
         return collide(self, obj)
 
+
 class button():
     def __init__(self, color, x, y, width, height, text=''):
         self.color = color
@@ -184,22 +204,25 @@ class button():
         self.height = height
         self.text = text
 
-    def draw(self,win,outline=None):
-        #Call this method to draw the button on the screen
+    def draw(self, win, outline=None):
+        # Call this method to draw the button on the screen
         if outline:
-            pygame.draw.rect(win, outline, (self.x-2,self.y-2,self.width+4,self.height+4),0)
-            
-        pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
-        
+            pygame.draw.rect(win, outline, (self.x-2, self.y -
+                                            2, self.width+4, self.height+4), 0)
+
+        pygame.draw.rect(win, self.color, (self.x, self.y,
+                                           self.width, self.height), 0)
+
         if self.text != '':
             font = pygame.font.SysFont('comicsans', 60)
-            text = font.render(self.text, 1, (0,0,0))
-            win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
+            text = font.render(self.text, 1, (0, 0, 0))
+            win.blit(text, (self.x + (self.width/2 - text.get_width()/2),
+                            self.y + (self.height/2 - text.get_height()/2)))
 
     def isOver(self, pos):
-        #Pos is the mouse position or a tuple of (x,y) coordinates
+        # Pos is the mouse position or a tuple of (x,y) coordinates
         if pos[0] > self.x and pos[0] < self.x + self.width:
             if pos[1] > self.y and pos[1] < self.y + self.height:
                 return True
-            
+
         return False
