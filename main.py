@@ -15,8 +15,8 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Doom Space")
 
 # Background
-BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
-
+BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background.jpg")), (WIDTH, HEIGHT))
+son = pygame.mixer.Sound('doom.wav')
 # Bonus
 global life_bonus
 life_bonus = 0
@@ -87,7 +87,9 @@ def main() :
     while run:
         clock.tick(FPS)
         redraw_window()
-
+    
+        son.play(loops=-1, maxtime=0, fade_ms=0)
+        son.set_volume(0.1)
         if lives <= 0 or player.health <= 0:
             lost = True
             lost_count += 1
