@@ -16,3 +16,11 @@ def getScores() :
     for i in result:
         resultList.append(i)
     return resultList
+
+def getCredits() :
+    # Fonction qui récupère les crédits en BDD
+    mydb = mysql.connector.connect(host="localhost", user="root", passwd="", db="doom")
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT credits from credits")
+    result = mycursor.fetchall()
+    return result[0][0]
