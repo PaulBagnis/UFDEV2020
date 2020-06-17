@@ -18,7 +18,7 @@ def getScores() :
         resultList.append(i)
     return resultList
 
-def updateScores(number) :
+def updateCredits(number) :
     strNumber = '\'' + str(number) + '\''
     query = "UPDATE credits SET credits =" + strNumber + "WHERE id = 1"
     mycursor.execute(query)

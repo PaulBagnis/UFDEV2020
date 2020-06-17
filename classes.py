@@ -97,12 +97,14 @@ class Player(Ship):
             laser.move(vel)
             if laser.off_screen(HEIGHT):
                 self.lasers.remove(laser)
+                return 0
             else:
                 for obj in objs:
                     if laser.collision(obj):
                         objs.remove(obj)
                         if laser in self.lasers:
                             self.lasers.remove(laser)
+                            return 1
 
     # Définition du temps entre deux tirs
     def cooldown(self):
