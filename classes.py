@@ -13,10 +13,13 @@ pygame.display.set_caption("Space Shooter Tutorial")
 RED_ENEMY = pygame.image.load(os.path.join("assets", "cacodemon.png"))
 AFRIT_ENEMY = pygame.image.load(os.path.join("assets", "Afrit.png"))
 SOUL_ENEMY = pygame.image.load(os.path.join("assets", "lostsoul.png"))
+L_ENEMY = pygame.image.load(os.path.join("assets", "s1.png"))
+M_ENEMY = pygame.image.load(os.path.join("assets", "s2.png"))
+N_ENEMY = pygame.image.load(os.path.join("assets", "s3.png"))
+O_ENEMY = pygame.image.load(os.path.join("assets", "s4.png"))
+P_ENEMY = pygame.image.load(os.path.join("assets", "s5.png"))
+Q_ENEMY = pygame.image.load(os.path.join("assets", "s6.png"))
 
-A_SHIP = pygame.image.load(os.path.join("assets", "s1.png"))
-B_SHIP = pygame.image.load(os.path.join("assets", "s2.png"))
-C_SHIP = pygame.image.load(os.path.join("assets", "s3.png"))
 
 # Player player
 YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "ship.png"))
@@ -38,8 +41,6 @@ son = pygame.mixer.Sound('doom.wav')
 
 
 class Ship:
-    COOLDOWN = 30
-
     # Constructeur
     def __init__(self, x, y, health=100):
         self.x = x
@@ -48,20 +49,12 @@ class Ship:
         self.ship_look = None
         self.laser_look = None
         self.lasers = []
-        self.cool_down_counter = 0
 
     # Fonction pour Render le vaisseau sur la fenêtre de jeu (fonction blit() de pygame)
     def draw(self, window):
         window.blit(self.ship_look, (self.x, self.y))
         for laser in self.lasers:
             laser.draw(window)
-
-    # Définition du temps entre deux tirs
-    def cooldown(self):
-        if self.cool_down_counter >= self.COOLDOWN:
-            self.cool_down_counter = 0
-        elif self.cool_down_counter > 0:
-            self.cool_down_counter += 1
 
     # Méthode qui permet le tir d'un laser
     def shoot(self):
@@ -92,15 +85,18 @@ class Ship:
 
 
 class Player(Ship):
+    COOLDOWN = 30
     # Constructeur
-    def __init__(self, x, y, health=100):
+
+    def __init__(self, x, y, look, health=100):
         super().__init__(x, y, health)
-        self.ship_look = YELLOW_SPACE_SHIP
+        self.ship_look = look
         self.laser_look = YELLOW_LASER
         # Le mask sert a parcourir les images pour détecter les pixels effectifs des png sur
         # la surface pour une meilleur gestion des impacts
         self.mask = pygame.mask.from_surface(self.ship_look)
         self.max_health = health
+        self.cool_down_counter = 0
 
     # Fonction pour Render le vaisseau sur la fenêtre de jeu (Overxrite celle du parent)
     def draw(self, window):
@@ -121,6 +117,13 @@ class Player(Ship):
                         if laser in self.lasers:
                             self.lasers.remove(laser)
 
+    # Définition du temps entre deux tirs
+    def cooldown(self):
+        if self.cool_down_counter >= self.COOLDOWN:
+            self.cool_down_counter = 0
+        elif self.cool_down_counter > 0:
+            self.cool_down_counter += 1
+
     # Barre de vie du joueur
     def healthbar(self, window):
         pygame.draw.rect(window, (255, 0, 0), (self.x, self.y +
@@ -131,25 +134,36 @@ class Player(Ship):
 
 # Classe pour les vaisseaux hostiles
 class Enemy(Ship):
-    COOLDOWN = 30
-
     # Différentes apparences des vaisseaux
     COLOR_MAP = {
-        "red": (RED_ENEMY, RED_LASER),
-        "green": (AFRIT_ENEMY, GREEN_LASER),
-        "blue": (SOUL_ENEMY, BLUE_LASER),
-        "a": (A_SHIP, RED_LASER),
-        "b": (B_SHIP, GREEN_LASER),
-        "c": (C_SHIP, BLUE_LASER)
+        "1": (RED_ENEMY, RED_LASER),
+        "2": (AFRIT_ENEMY, GREEN_LASER),
+        "3": (SOUL_ENEMY, BLUE_LASER),
+        "4": (L_ENEMY, RED_LASER),
+        "5": (M_ENEMY, GREEN_LASER),
+        "6": (N_ENEMY, BLUE_LASER),
+        "7": (O_ENEMY, RED_LASER),
+        "8": (P_ENEMY, GREEN_LASER),
+        "9": (Q_ENEMY, BLUE_LASER),
     }
-
     # Constructeur
 
-    def __init__(self, x, y, color, health=100):
-        super().__init__(x, y, health)
+    def __init__(self, x, y, color, health, vel, cd):
+        super().__init__(x, y)
         self.ship_look, self.laser_look = self.COLOR_MAP[color]
         self.mask = pygame.mask.from_surface(self.ship_look)
+        self.health = health
         self.max_health = 100
+        self.vel = vel
+        self.cool_down_counter = 0
+        self.cd = cd
+
+    # Définition du temps entre deux tirs
+    def cooldown(self):
+        if self.cool_down_counter >= self.cd:
+            self.cool_down_counter = 0
+        elif self.cool_down_counter > 0:
+            self.cool_down_counter += 1
 
     # Fait de tirer
     def shoot(self):
@@ -166,8 +180,8 @@ class Enemy(Ship):
                                                10, self.ship_look.get_width() * (self.health/self.max_health), 10))
 
     # Méthode pour bouger
-    def move(self, vel):
-        self.y += vel
+    def move(self):
+        self.y += self.vel
 
 
 class Laser:
