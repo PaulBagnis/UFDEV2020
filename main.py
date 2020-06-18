@@ -285,8 +285,8 @@ def select_bonus():
         WIN.blit(vel_label, (450, 450))
     while run:
         WIN.blit(BG2, (0, 0))
-        WIN.blit(RAGE_BONUS, (230, 230))
-        WIN.blit(LIFE_BONUS, (230, 420))
+        WIN.blit(LIFE_BONUS, (230, 230))
+        WIN.blit(RAGE_BONUS, (230, 420))
         title_label = main_font.render("Select Bonus Menu", 1, (255, 255, 255))
         price_label = back_font.render("50 credits each", 1, (255, 255, 255))
         back_label = back_font.render(
