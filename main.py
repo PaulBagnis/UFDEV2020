@@ -21,6 +21,8 @@ pygame.display.set_caption("Doom Space")
 # Background
 BG = pygame.transform.scale(pygame.image.load(
     os.path.join("assets", "background.jpg")), (WIDTH, HEIGHT))
+BG2 = pygame.transform.scale(pygame.image.load(
+    os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
 son = pygame.mixer.Sound('doom.wav')
 # Bonus
 global life_bonus
@@ -54,12 +56,12 @@ def main():
     laser_vel = 5
 
     # ICI CONDITION POUR VAISSEAU CHOISI
-    if select_ship_player == 2 :
-        player = Player(300, 630, YELLOW_SPACE_SHIP)
-    elif select_ship_player == 3 :
-        player = Player(300, 630, YELLOW_SPACE_SHIP)
-    else :
-        player = Player(300, 630, YELLOW_SPACE_SHIP)
+    if select_ship_player == 2:
+        player = Player(300, 630, XWING_SPACE_SHIP)
+    elif select_ship_player == 3:
+        player = Player(300, 630, BADASS_SPACE_SHIP)
+    else:
+        player = Player(300, 630, STANDARD_SPACE_SHIP)
 
     clock = pygame.time.Clock()
 
@@ -71,7 +73,8 @@ def main():
         # draw text
         lives_label = main_font.render(f"Lives: {lives}", 1, (255, 255, 255))
         level_label = main_font.render(f"Level: {level}", 1, (255, 255, 255))
-        credits_label = main_font.render(f"Credits: {money}", 1, (255, 255, 255))
+        credits_label = main_font.render(
+            f"Credits: {money}", 1, (255, 255, 255))
         WIN.blit(lives_label, (10, 10))
         WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
         WIN.blit(credits_label, (WIDTH/2 - credits_label.get_width()/2, 10))
@@ -83,8 +86,9 @@ def main():
 
         if lost:
             won_money = money - start_money
-            lost_label = lost_font.render("You Lost!!", 1, (255,255,255))
-            cred_label = lost_font.render(f"You won {won_money} credits !!", 1, (255,255,255))
+            lost_label = lost_font.render("You Lost!!", 1, (255, 255, 255))
+            cred_label = lost_font.render(
+                f"You won {won_money} credits !!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
             WIN.blit(cred_label, (WIDTH/2 - cred_label.get_width()/2, 500))
             life_bonus = 0
@@ -221,10 +225,14 @@ def select_ship():
         money_label = back_font.render(f"Credits: {money}", 1, (255, 255, 255))
         WIN.blit(money_label, (10, 10))
     while run:
-        WIN.blit(BG, (0, 0))
+        WIN.blit(BG2, (0, 0))
+        WIN.blit(STANDARD_SPACE_SHIP, (230, 150))
+        WIN.blit(XWING_SPACE_SHIP, (220, 330))
+        WIN.blit(BADASS_SPACE_SHIP, (200, 500))
         # les titres
         title_label = main_font.render("Select Ship Menu", 1, (255, 255, 255))
-        back_label = back_font.render("Hit space to go back to main menu", 1, (255, 255, 255))
+        back_label = back_font.render(
+            "Hit space to go back to main menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 30))
         WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 700))
         redraw_window()
@@ -261,19 +269,22 @@ def select_bonus():
     select_dmg_bonus = button((255, 255, 255), 550, 450, 180, 50, 'Buy One')
 
     def redraw_window():
-        select_life_bonus.draw(WIN, (0,0,0))
-        select_dmg_bonus.draw(WIN, (0,0,0))
-        life_label = main_font.render(f"x{life_bonus}", 1, (255,255,255))
-        vel_label = main_font.render(f"x{vel_bonus}", 1, (255,255,255))
-        money_label = back_font.render(f"Credits: {money}", 1, (255,255,255))
+        select_life_bonus.draw(WIN, (0, 0, 0))
+        select_dmg_bonus.draw(WIN, (0, 0, 0))
+        life_label = main_font.render(f"x{life_bonus}", 1, (255, 255, 255))
+        vel_label = main_font.render(f"x{vel_bonus}", 1, (255, 255, 255))
+        money_label = back_font.render(f"Credits: {money}", 1, (255, 255, 255))
         WIN.blit(money_label, (10, 10))
         WIN.blit(life_label, (450, 250))
         WIN.blit(vel_label, (450, 450))
     while run:
-        WIN.blit(BG, (0, 0))
+        WIN.blit(BG2, (0, 0))
+        WIN.blit(RAGE_BONUS, (230, 230))
+        WIN.blit(LIFE_BONUS, (230, 420))
         title_label = main_font.render("Select Bonus Menu", 1, (255, 255, 255))
         price_label = back_font.render("50 credits each", 1, (255, 255, 255))
-        back_label = back_font.render("Hit space to go back to main menu", 1, (255, 255, 255))
+        back_label = back_font.render(
+            "Hit space to go back to main menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 100))
         WIN.blit(price_label, (WIDTH/2 - price_label.get_width()/2, 160))
         WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 600))
@@ -299,21 +310,28 @@ def select_bonus():
                     money -= 50
     pygame.quit()
 
+
 def info_menu():
     title_font = pygame.font.SysFont("comicsans", 70)
     second_font = pygame.font.SysFont("comicsans", 50)
     third_font = pygame.font.SysFont("comicsans", 30)
     run = True
     while run:
-        WIN.blit(BG, (0,0))
-        title_label = title_font.render("How to Play Doom", 1, (255,255,255))
-        one_label = second_font.render("Press Q to go left", 1, (255,255,255))
-        two_label = second_font.render("Press D to go right", 1, (255,255,255))
-        three_label = second_font.render("Press A to go up", 1, (255,255,255))
-        four_label = second_font.render("Press S to go down", 1, (255,255,255))
-        five_label = second_font.render("Press SPACE to SHOOT !", 1, (255,255,255))
-        six_label = second_font.render("ENJOY !", 1, (255,255,255))
-        end_label = third_font.render("Press Esc to come back to main Menu", 1, (255,255,255))
+        WIN.blit(BG, (0, 0))
+        title_label = title_font.render("How to Play Doom", 1, (255, 255, 255))
+        one_label = second_font.render(
+            "Press Q to go left", 1, (255, 255, 255))
+        two_label = second_font.render(
+            "Press D to go right", 1, (255, 255, 255))
+        three_label = second_font.render(
+            "Press A to go up", 1, (255, 255, 255))
+        four_label = second_font.render(
+            "Press S to go down", 1, (255, 255, 255))
+        five_label = second_font.render(
+            "Press SPACE to SHOOT !", 1, (255, 255, 255))
+        six_label = second_font.render("ENJOY !", 1, (255, 255, 255))
+        end_label = third_font.render(
+            "Press Esc to come back to main Menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 50))
         WIN.blit(one_label, (WIDTH/2 - one_label.get_width()/2, 150))
         WIN.blit(two_label, (WIDTH/2 - two_label.get_width()/2, 250))
@@ -329,6 +347,7 @@ def info_menu():
                     main_menu()
     pygame.quit()
 
+
 def main_menu():
     doom_font = pygame.font.SysFont("comicsans", 150)
     title_font = pygame.font.SysFont("comicsans", 70)
@@ -338,11 +357,16 @@ def main_menu():
     while run:
         WIN.blit(BG, (0, 0))
         doom_label = doom_font.render("DOOM", 1, (255, 0, 0))
-        title_label = title_font.render("Press the mouse to begin...", 1, (255, 255, 255))
-        select_label = second_font.render("Press A to select a ship.", 1, (255, 255, 255))
-        bonus_label = second_font.render("Press E to select bonuses.", 1, (255, 255, 255))
-        info_label = second_font.render("Press I to get Informations.", 1, (255, 255, 255))
-        end_label = third_font.render("Press Esc to come back to main Menu", 1, (255, 255, 255))
+        title_label = title_font.render(
+            "Press the mouse to begin...", 1, (255, 255, 255))
+        select_label = second_font.render(
+            "Press A to select a ship.", 1, (255, 255, 255))
+        bonus_label = second_font.render(
+            "Press E to select bonuses.", 1, (255, 255, 255))
+        info_label = second_font.render(
+            "Press I to get Informations.", 1, (255, 255, 255))
+        end_label = third_font.render(
+            "Press Esc to come back to main Menu", 1, (255, 255, 255))
         WIN.blit(doom_label, (WIDTH/2 - doom_label.get_width()/2, 80))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 250))
         WIN.blit(select_label, (WIDTH/2 - select_label.get_width()/2, 350))

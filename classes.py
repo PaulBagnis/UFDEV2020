@@ -10,6 +10,8 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Shooter Tutorial")
 
 # Load images
+
+# Enemies
 RED_ENEMY = pygame.image.load(os.path.join("assets", "cacodemon.png"))
 AFRIT_ENEMY = pygame.image.load(os.path.join("assets", "Afrit.png"))
 SOUL_ENEMY = pygame.image.load(os.path.join("assets", "lostsoul.png"))
@@ -22,13 +24,19 @@ Q_ENEMY = pygame.image.load(os.path.join("assets", "s6.png"))
 
 
 # Player player
-YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "ship.png"))
+STANDARD_SPACE_SHIP = pygame.image.load(os.path.join("assets", "ship.png"))
+XWING_SPACE_SHIP = pygame.image.load(os.path.join("assets", "ship2.png"))
+BADASS_SPACE_SHIP = pygame.image.load(os.path.join("assets", "ship3.png"))
 
 # Lasers
-RED_LASER = pygame.image.load(os.path.join("assets", "laser1.png"))
-GREEN_LASER = pygame.image.load(os.path.join("assets", "laser1.png"))
+RED_LASER = pygame.image.load(os.path.join("assets", "laser3.png"))
+GREEN_LASER = pygame.image.load(os.path.join("assets", "bfg.png"))
 BLUE_LASER = pygame.image.load(os.path.join("assets", "laser1.png"))
-YELLOW_LASER = pygame.image.load(os.path.join("assets", "bfg.png"))
+YELLOW_LASER = pygame.image.load(os.path.join("assets", "laser2.png"))
+
+# Bonus
+RAGE_BONUS = pygame.image.load(os.path.join("assets", "rage.png"))
+LIFE_BONUS = pygame.image.load(os.path.join("assets", "fak.png"))
 
 # Background
 BG = pygame.transform.scale(pygame.image.load(
@@ -91,7 +99,7 @@ class Player(Ship):
     def __init__(self, x, y, look, health=100):
         super().__init__(x, y, health)
         self.ship_look = look
-        self.laser_look = YELLOW_LASER
+        self.laser_look = GREEN_LASER
         # Le mask sert a parcourir les images pour détecter les pixels effectifs des png sur
         # la surface pour une meilleur gestion des impacts
         self.mask = pygame.mask.from_surface(self.ship_look)
@@ -139,13 +147,13 @@ class Enemy(Ship):
     # Différentes apparences des vaisseaux
     COLOR_MAP = {
         "1": (RED_ENEMY, RED_LASER),
-        "2": (AFRIT_ENEMY, GREEN_LASER),
+        "2": (AFRIT_ENEMY, YELLOW_LASER),
         "3": (SOUL_ENEMY, BLUE_LASER),
         "4": (L_ENEMY, RED_LASER),
-        "5": (M_ENEMY, GREEN_LASER),
+        "5": (M_ENEMY, YELLOW_LASER),
         "6": (N_ENEMY, BLUE_LASER),
         "7": (O_ENEMY, RED_LASER),
-        "8": (P_ENEMY, GREEN_LASER),
+        "8": (P_ENEMY, YELLOW_LASER),
         "9": (Q_ENEMY, BLUE_LASER),
     }
     # Constructeur
