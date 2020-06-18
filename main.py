@@ -38,13 +38,7 @@ select_ship_player = 0
 def main():
     global life_bonus
     global vel_bonus
-    # print("Tout marche !")
-    # scores = getScores()
-    # for score in scores :
-    #     print(score)
-    print(select_ship_player)
-    print(life_bonus)
-    print(vel_bonus)
+   
     run = True
     FPS = 60
     level = 0
@@ -63,11 +57,11 @@ def main():
 
     # ICI CONDITION POUR VAISSEAU CHOISI
     if select_ship_player == 2:
-        player = Player(300, 630, XWING_SPACE_SHIP)
+        player = Player(300, 600, XWING_SPACE_SHIP)
     elif select_ship_player == 3:
-        player = Player(300, 630, BADASS_SPACE_SHIP)
+        player = Player(300, 600, BADASS_SPACE_SHIP)
     else:
-        player = Player(300, 630, STANDARD_SPACE_SHIP)
+        player = Player(300, 600, STANDARD_SPACE_SHIP)
 
     clock = pygame.time.Clock()
 
@@ -253,13 +247,13 @@ def select_ship():
                     main_menu()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if select_ship_1.isOver(pos):
-                    select_ship_player += 1
+                    select_ship_player = 1
                     main_menu()
                 if select_ship_2.isOver(pos):
-                    select_ship_player += 2
+                    select_ship_player = 2
                     main_menu()
                 if select_ship_3.isOver(pos):
-                    select_ship_player += 3
+                    select_ship_player = 3
                     main_menu()
     pygame.quit()
 
