@@ -19,6 +19,8 @@ pygame.display.set_caption("Doom Space")
 # Background
 BG = pygame.transform.scale(pygame.image.load(
     os.path.join("assets", "background.jpg")), (WIDTH, HEIGHT))
+BG2 = pygame.transform.scale(pygame.image.load(
+    os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
 son = pygame.mixer.Sound('doom.wav')
 # Bonus
 global life_bonus
@@ -58,7 +60,7 @@ def main():
     laser_vel = 5
 
     # ICI CONDITION POUR VAISSEAU CHOISI
-    player = Player(300, 630, YELLOW_SPACE_SHIP)
+    player = Player(300, 630, STANDARD_SPACE_SHIP)
 
     clock = pygame.time.Clock()
 
@@ -253,7 +255,10 @@ def select_ship():
         money_label = back_font.render(f"Credits: {money}", 1, (255, 255, 255))
         WIN.blit(money_label, (10, 10))
     while run:
-        WIN.blit(BG, (0, 0))
+        WIN.blit(BG2, (0, 0))
+        WIN.blit(STANDARD_SPACE_SHIP, (230, 150))
+        WIN.blit(XWING_SPACE_SHIP, (220, 330))
+        WIN.blit(BADASS_SPACE_SHIP, (200, 500))
         # les titres
         title_label = main_font.render("Select Ship Menu", 1, (255, 255, 255))
         back_label = back_font.render(
@@ -299,7 +304,9 @@ def select_bonus():
         money_label = back_font.render(f"Credits: {money}", 1, (255, 255, 255))
         WIN.blit(money_label, (10, 10))
     while run:
-        WIN.blit(BG, (0, 0))
+        WIN.blit(BG2, (0, 0))
+        WIN.blit(RAGE_BONUS, (230, 230))
+        WIN.blit(LIFE_BONUS, (230, 420))
         title_label = main_font.render("Select Bonus Menu", 1, (255, 255, 255))
         price_label = back_font.render("50 credits each", 1, (255, 255, 255))
         back_label = back_font.render(
