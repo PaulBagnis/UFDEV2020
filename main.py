@@ -6,6 +6,7 @@ import random
 from classes import *
 from functions import *
 pygame.font.init()
+pygame.mixer.init()
 
 mydb = mysql.connector.connect(
     host="localhost", user="root", passwd="", db="doom")
@@ -29,33 +30,34 @@ vel_bonus = 0
 global select_ship_player
 select_ship_player = 0
 
-# Credits
-global money
-money = getCredits()
-
 
 def main():
+    global life_bonus
+    global vel_bonus
     # print("Tout marche !")
     # scores = getScores()
     # for score in scores :
     #     print(score)
-    # print(select_ship_player)
-    # print(life_bonus)
-    # print(vel_bonus)
+    print(select_ship_player)
+    print(life_bonus)
+    print(vel_bonus)
     run = True
     FPS = 60
     level = 0
-    lives = 5
+    lives = 5 + life_bonus
     main_font = pygame.font.SysFont("comicsans", 50)
     lost_font = pygame.font.SysFont("comicsans", 60)
+    money = getCredits()
+    start_money = money
 
     enemies = []
     wave_length = 5
 
     # CHANGER CA EN FONCTION DU VAISSEAU CHOISI et BONUS
-    player_vel = 5
+    player_vel = 5 + vel_bonus
     laser_vel = 5
 
+    # ICI CONDITION POUR VAISSEAU CHOISI
     player = Player(300, 630, YELLOW_SPACE_SHIP)
 
     clock = pygame.time.Clock()
@@ -68,9 +70,12 @@ def main():
         # draw text
         lives_label = main_font.render(f"Lives: {lives}", 1, (255, 255, 255))
         level_label = main_font.render(f"Level: {level}", 1, (255, 255, 255))
+        credits_label = main_font.render(
+            f"Credits: {money}", 1, (255, 255, 255))
 
         WIN.blit(lives_label, (10, 10))
         WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
+        WIN.blit(credits_label, (WIDTH/2 - credits_label.get_width()/2, 10))
 
         for enemy in enemies:
             enemy.draw(WIN)
@@ -78,12 +83,15 @@ def main():
         player.draw(WIN)
 
         if lost:
+            won_money = money - start_money
             lost_label = lost_font.render("You Lost!!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
-            global life_bonus
+            cred_label = lost_font.render(
+                f"You won {won_money} credits !!", 1, (255, 255, 255))
+            WIN.blit(cred_label, (WIDTH/2 - cred_label.get_width()/2, 500))
             life_bonus = 0
-            global vel_bonus
             vel_bonus = 0
+            updateCredits(money)
 
         pygame.display.update()
 
@@ -136,7 +144,7 @@ def main():
                             50, WIDTH-100), random.randrange(-1500, -100), "6", 100, 1, 40)
                     enemies.append(enemy)
                     i += 1
-            elif level >=3:
+            elif level == 3:
                 for i in range(wave_length):
                     random_chances = random.randrange(0, 100)
                     if random_chances % 4 == 0:
@@ -150,12 +158,51 @@ def main():
                             50, WIDTH-100), random.randrange(-1500, -100), "9", 100, 1, 40)
                     enemies.append(enemy)
                     i += 1
+            else:
+                for i in range(wave_length):
+                    random_chances = random.randrange(0, 100)
+                    if random_chances % 4 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH-100), random.randrange(-1500, -100), "1", 100, 1, 20)
+                    elif random_chances % 2 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH - 100), random.randrange(-1500, -100), "2", 100, 1, 30)
+                    elif random_chances % 2 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH - 100), random.randrange(-1500, -100), "3", 100, 1, 30)
+                    elif random_chances % 2 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH - 100), random.randrange(-1500, -100), "4", 100, 1, 30)
+                    elif random_chances % 2 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH - 100), random.randrange(-1500, -100), "5", 100, 1, 30)
+
+                    elif random_chances % 2 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH - 100), random.randrange(-1500, -100), "6", 100, 1, 30)
+                    elif random_chances % 2 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH - 100), random.randrange(-1500, -100), "7", 100, 1, 30)
+                    elif random_chances % 2 == 0:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH-100), random.randrange(-1500, -100), "8", 100, 1, 30)
+                    else:
+                        enemy = Enemy(random.randrange(
+                            50, WIDTH-100), random.randrange(-1500, -100), "9", 100, 1, 40)
+                    enemies.append(enemy)
+                    i += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                life_bonus = 0
+                vel_bonus = 0
+                updateCredits(money)
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    life_bonus = 0
+                    vel_bonus = 0
+                    updateCredits(money)
                     main_menu()
 
         keys = pygame.key.get_pressed()
@@ -184,12 +231,13 @@ def main():
                 lives -= 1
                 enemies.remove(enemy)
 
-        player.move_lasers(-laser_vel, enemies)
+        if player.move_lasers(-laser_vel, enemies) == 1:
+            money += 10
 
 
 def select_ship():
     global select_ship_player
-    # print(getScores())
+    money = getCredits()
     main_font = pygame.font.SysFont("comicsans", 70)
     back_font = pygame.font.SysFont("comicsans", 30)
     run = True
@@ -217,6 +265,7 @@ def select_ship():
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
+                updateCredits(money)
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -237,7 +286,7 @@ def select_ship():
 def select_bonus():
     global life_bonus
     global vel_bonus
-    # print("in bonus menu")
+    money = getCredits()
     main_font = pygame.font.SysFont("comicsans", 70)
     back_font = pygame.font.SysFont("comicsans", 30)
     run = True
@@ -263,15 +312,19 @@ def select_bonus():
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
             if event.type == pygame.QUIT:
+                updateCredits(money)
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    updateCredits(money)
                     main_menu()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if select_life_bonus.isOver(pos):
                     life_bonus += 1
+                    money -= 50
                 if select_dmg_bonus.isOver(pos):
                     vel_bonus += 1
+                    money -= 50
     pygame.quit()
 
 
