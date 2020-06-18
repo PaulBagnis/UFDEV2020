@@ -5,6 +5,7 @@ import random
 
 from classes import *
 from functions import *
+pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
@@ -81,8 +82,8 @@ def main() :
         if lost:
             won_money = money - start_money
             lost_label = lost_font.render("You Lost!!", 1, (255,255,255))
-            WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
             cred_label = lost_font.render(f"You won {won_money} credits !!", 1, (255,255,255))
+            WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
             WIN.blit(cred_label, (WIDTH/2 - cred_label.get_width()/2, 500))
             life_bonus = 0
             vel_bonus = 0
@@ -221,8 +222,12 @@ def select_bonus() :
     def redraw_window():
         select_life_bonus.draw(WIN, (0,0,0))
         select_dmg_bonus.draw(WIN, (0,0,0))
+        life_label = main_font.render(f"x{life_bonus}", 1, (255,255,255))
+        vel_label = main_font.render(f"x{vel_bonus}", 1, (255,255,255))
         money_label = back_font.render(f"Credits: {money}", 1, (255,255,255))
         WIN.blit(money_label, (10, 10))
+        WIN.blit(life_label, (450, 250))
+        WIN.blit(vel_label, (450, 450))
     while run:
         WIN.blit(BG, (0,0))
         title_label = main_font.render("Select Bonus Menu", 1, (255,255,255))
@@ -249,6 +254,34 @@ def select_bonus() :
                 if select_dmg_bonus.isOver(pos):
                     vel_bonus += 1
                     money -= 50
+    pygame.quit()
+
+def info_menu():
+    title_font = pygame.font.SysFont("comicsans", 70)
+    second_font = pygame.font.SysFont("comicsans", 50)
+    third_font = pygame.font.SysFont("comicsans", 30)
+    run = True
+    while run:
+        WIN.blit(BG, (0,0))
+        title_label = title_font.render("How to Play Doom", 1, (255,255,255))
+        first_label = second_font.render("", 1, (255,255,255))
+        end_label = third_font.render("Press Esc to come back to main Menu", 1, (255,255,255))
+        WIN.blit(doom_label, (WIDTH/2 - doom_label.get_width()/2, 80))
+        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 250))
+        WIN.blit(select_label, (WIDTH/2 - select_label.get_width()/2, 400))
+        WIN.blit(bonus_label, (WIDTH/2 - bonus_label.get_width()/2, 550))
+        WIN.blit(end_label, (WIDTH/2 - end_label.get_width()/2, 650))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    select_ship()
+                if event.key == pygame.K_e:
+                    select_bonus()
     pygame.quit()
 
 def main_menu():
