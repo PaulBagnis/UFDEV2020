@@ -62,7 +62,7 @@ def main():
     # ICI CONDITION POUR VAISSEAU CHOISI
     if select_ship_player == 2 :
         player = Player(300, 630, YELLOW_SPACE_SHIP)
-    elif select_ship_player == 2 :
+    elif select_ship_player == 3 :
         player = Player(300, 630, YELLOW_SPACE_SHIP)
     else :
         player = Player(300, 630, YELLOW_SPACE_SHIP)
