@@ -36,13 +36,7 @@ select_ship_player = 0
 def main():
     global life_bonus
     global vel_bonus
-    # print("Tout marche !")
-    # scores = getScores()
-    # for score in scores :
-    #     print(score)
-    print(select_ship_player)
-    print(life_bonus)
-    print(vel_bonus)
+   
     run = True
     FPS = 60
     level = 0
