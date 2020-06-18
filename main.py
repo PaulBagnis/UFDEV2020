@@ -45,6 +45,7 @@ def main():
     lives = 5 + life_bonus
     main_font = pygame.font.SysFont("comicsans", 50)
     lost_font = pygame.font.SysFont("comicsans", 60)
+    info_font = pygame.font.SysFont("comicsans", 25)
     money = getCredits()
     start_money = money
 
@@ -69,13 +70,15 @@ def main():
     lost_count = 0
 
     def redraw_window():
+        global vel_bonus
         WIN.blit(BG, (0, 0))
         # draw text
         lives_label = main_font.render(f"Lives: {lives}", 1, (255, 255, 255))
         level_label = main_font.render(f"Level: {level}", 1, (255, 255, 255))
-        credits_label = main_font.render(
-            f"Credits: {money}", 1, (255, 255, 255))
+        credits_label = main_font.render(f"Credits: {money}", 1, (255, 255, 255))
+        vel_label = info_font.render(f"Speed Bonus: {vel_bonus}", 1, (255, 255, 255))
         WIN.blit(lives_label, (10, 10))
+        WIN.blit(vel_label, (10, 50))
         WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
         WIN.blit(credits_label, (WIDTH/2 - credits_label.get_width()/2, 10))
 
@@ -87,8 +90,7 @@ def main():
         if lost:
             won_money = money - start_money
             lost_label = lost_font.render("You Lost!!", 1, (255, 255, 255))
-            cred_label = lost_font.render(
-                f"You won {won_money} credits !!", 1, (255, 255, 255))
+            cred_label = lost_font.render(f"You won {won_money} credits !!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
             WIN.blit(cred_label, (WIDTH/2 - cred_label.get_width()/2, 500))
             life_bonus = 0
@@ -123,42 +125,33 @@ def main():
                 for i in range(wave_length):
                     random_chances = random.randrange(0, 100)
                     if random_chances % 4 == 0:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "7", 100, 1, 20)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "7", 100, 1, 20)
                     elif random_chances % 2 == 0:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "8", 100, 1, 30)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "8", 100, 1, 30)
                     else:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "9", 100, 1, 40)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "9", 100, 1, 40)
                     enemies.append(enemy)
                     i += 1
             elif level % 2 == 0:
                 for i in range(wave_length):
                     random_chances = random.randrange(0, 100)
                     if random_chances % 4 == 0:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "4", 100, 1, 20)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "4", 100, 1, 20)
                     elif random_chances % 2 == 0:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "5", 100, 1, 30)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "5", 100, 1, 30)
                     else:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "6", 100, 1, 40)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "6", 100, 1, 40)
                     enemies.append(enemy)
                     i += 1
             elif level % 1 == 0:
                 for i in range(wave_length):
                     random_chances = random.randrange(0, 100)
                     if random_chances % 4 == 0:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "1", 100, 1, 20)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "1", 100, 1, 20)
                     elif random_chances % 2 == 0:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "2", 100, 1, 30)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "2", 100, 1, 30)
                     else:
-                        enemy = Enemy(random.randrange(
-                            50, WIDTH-100), random.randrange(-1500, -100), "3", 100, 1, 40)
+                        enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "3", 100, 1, 40)
                     enemies.append(enemy)
                     i += 1
 
@@ -231,8 +224,7 @@ def select_ship():
         WIN.blit(BADASS_SPACE_SHIP, (200, 500))
         # les titres
         title_label = main_font.render("Select Ship Menu", 1, (255, 255, 255))
-        back_label = back_font.render(
-            "Hit space to go back to main menu", 1, (255, 255, 255))
+        back_label = back_font.render("Hit space to go back to main menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 30))
         WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 700))
         redraw_window()
@@ -265,8 +257,8 @@ def select_bonus():
     main_font = pygame.font.SysFont("comicsans", 70)
     back_font = pygame.font.SysFont("comicsans", 30)
     run = True
-    select_life_bonus = button((255, 255, 255), 550, 250, 180, 50, 'Buy One')
-    select_dmg_bonus = button((255, 255, 255), 550, 450, 180, 50, 'Buy One')
+    select_life_bonus = button((255, 255, 255), 520, 250, 200, 50, '+Life')
+    select_dmg_bonus = button((255, 255, 255), 520, 450, 200, 50, '+Velocity')
 
     def redraw_window():
         select_life_bonus.draw(WIN, (0, 0, 0))
@@ -275,16 +267,15 @@ def select_bonus():
         vel_label = main_font.render(f"x{vel_bonus}", 1, (255, 255, 255))
         money_label = back_font.render(f"Credits: {money}", 1, (255, 255, 255))
         WIN.blit(money_label, (10, 10))
-        WIN.blit(life_label, (450, 250))
-        WIN.blit(vel_label, (450, 450))
+        WIN.blit(life_label, (420, 250))
+        WIN.blit(vel_label, (420, 450))
     while run:
         WIN.blit(BG2, (0, 0))
         WIN.blit(LIFE_BONUS, (230, 230))
         WIN.blit(RAGE_BONUS, (230, 420))
         title_label = main_font.render("Select Bonus Menu", 1, (255, 255, 255))
         price_label = back_font.render("50 credits each", 1, (255, 255, 255))
-        back_label = back_font.render(
-            "Hit space to go back to main menu", 1, (255, 255, 255))
+        back_label = back_font.render("Hit space to go back to main menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 100))
         WIN.blit(price_label, (WIDTH/2 - price_label.get_width()/2, 160))
         WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 600))
@@ -319,19 +310,13 @@ def info_menu():
     while run:
         WIN.blit(BG, (0, 0))
         title_label = title_font.render("How to Play Doom", 1, (255, 255, 255))
-        one_label = second_font.render(
-            "Press Q to go left", 1, (255, 255, 255))
-        two_label = second_font.render(
-            "Press D to go right", 1, (255, 255, 255))
-        three_label = second_font.render(
-            "Press A to go up", 1, (255, 255, 255))
-        four_label = second_font.render(
-            "Press S to go down", 1, (255, 255, 255))
-        five_label = second_font.render(
-            "Press SPACE to SHOOT !", 1, (255, 255, 255))
+        one_label = second_font.render("Press Q to go left", 1, (255, 255, 255))
+        two_label = second_font.render("Press D to go right", 1, (255, 255, 255))
+        three_label = second_font.render("Press A to go up", 1, (255, 255, 255))
+        four_label = second_font.render("Press S to go down", 1, (255, 255, 255))
+        five_label = second_font.render("Press SPACE to SHOOT !", 1, (255, 255, 255))
         six_label = second_font.render("ENJOY !", 1, (255, 255, 255))
-        end_label = third_font.render(
-            "Press Esc to come back to main Menu", 1, (255, 255, 255))
+        end_label = third_font.render("Press Esc to come back to main Menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 50))
         WIN.blit(one_label, (WIDTH/2 - one_label.get_width()/2, 150))
         WIN.blit(two_label, (WIDTH/2 - two_label.get_width()/2, 250))
@@ -345,6 +330,7 @@ def info_menu():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     main_menu()
+    updateBonus(vel_bonus, life_bonus)
     pygame.quit()
 
 
@@ -357,16 +343,11 @@ def main_menu():
     while run:
         WIN.blit(BG, (0, 0))
         doom_label = doom_font.render("DOOM", 1, (255, 0, 0))
-        title_label = title_font.render(
-            "Press the mouse to begin...", 1, (255, 255, 255))
-        select_label = second_font.render(
-            "Press A to select a ship.", 1, (255, 255, 255))
-        bonus_label = second_font.render(
-            "Press E to select bonuses.", 1, (255, 255, 255))
-        info_label = second_font.render(
-            "Press I to get Informations.", 1, (255, 255, 255))
-        end_label = third_font.render(
-            "Press Esc to come back to main Menu", 1, (255, 255, 255))
+        title_label = title_font.render("Press the mouse to begin...", 1, (255, 255, 255))
+        select_label = second_font.render("Press A to select a ship.", 1, (255, 255, 255))
+        bonus_label = second_font.render("Press E to select bonuses.", 1, (255, 255, 255))
+        info_label = second_font.render("Press I to get Informations.", 1, (255, 255, 255))
+        end_label = third_font.render("Press Esc to come back to main Menu", 1, (255, 255, 255))
         WIN.blit(doom_label, (WIDTH/2 - doom_label.get_width()/2, 80))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 250))
         WIN.blit(select_label, (WIDTH/2 - select_label.get_width()/2, 350))
@@ -386,6 +367,7 @@ def main_menu():
                     select_bonus()
                 if event.key == pygame.K_i:
                     info_menu()
+    updateBonus(vel_bonus, life_bonus)
     pygame.quit()
 
 
