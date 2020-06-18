@@ -256,8 +256,7 @@ def select_ship():
         WIN.blit(BG, (0, 0))
         # les titres
         title_label = main_font.render("Select Ship Menu", 1, (255, 255, 255))
-        back_label = back_font.render(
-            "Hit space to go back to main menu", 1, (255, 255, 255))
+        back_label = back_font.render("Hit space to go back to main menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 30))
         WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 700))
         redraw_window()
@@ -306,8 +305,7 @@ def select_bonus():
         WIN.blit(BG, (0, 0))
         title_label = main_font.render("Select Bonus Menu", 1, (255, 255, 255))
         price_label = back_font.render("50 credits each", 1, (255, 255, 255))
-        back_label = back_font.render(
-            "Hit space to go back to main menu", 1, (255, 255, 255))
+        back_label = back_font.render("Hit space to go back to main menu", 1, (255, 255, 255))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 100))
         WIN.blit(price_label, (WIDTH/2 - price_label.get_width()/2, 160))
         WIN.blit(back_label, (WIDTH/2 - back_label.get_width()/2, 600))
@@ -339,24 +337,26 @@ def info_menu():
     while run:
         WIN.blit(BG, (0,0))
         title_label = title_font.render("How to Play Doom", 1, (255,255,255))
-        first_label = second_font.render("", 1, (255,255,255))
+        one_label = second_font.render("Press Q to go left", 1, (255,255,255))
+        two_label = second_font.render("Press D to go right", 1, (255,255,255))
+        three_label = second_font.render("Press A to go up", 1, (255,255,255))
+        four_label = second_font.render("Press S to go down", 1, (255,255,255))
+        five_label = second_font.render("Press SPACE to SHOOT !", 1, (255,255,255))
+        six_label = second_font.render("ENJOY !", 1, (255,255,255))
         end_label = third_font.render("Press Esc to come back to main Menu", 1, (255,255,255))
-        WIN.blit(doom_label, (WIDTH/2 - doom_label.get_width()/2, 80))
-        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 250))
-        WIN.blit(select_label, (WIDTH/2 - select_label.get_width()/2, 400))
-        WIN.blit(bonus_label, (WIDTH/2 - bonus_label.get_width()/2, 550))
-        WIN.blit(end_label, (WIDTH/2 - end_label.get_width()/2, 650))
+        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 50))
+        WIN.blit(one_label, (WIDTH/2 - one_label.get_width()/2, 150))
+        WIN.blit(two_label, (WIDTH/2 - two_label.get_width()/2, 250))
+        WIN.blit(three_label, (WIDTH/2 - three_label.get_width()/2, 350))
+        WIN.blit(four_label, (WIDTH/2 - four_label.get_width()/2, 450))
+        WIN.blit(five_label, (WIDTH/2 - five_label.get_width()/2, 550))
+        WIN.blit(six_label, (WIDTH/2 - six_label.get_width()/2, 650))
+        WIN.blit(end_label, (WIDTH/2 - end_label.get_width()/2, 700))
         pygame.display.update()
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                main()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
-                    select_ship()
-                if event.key == pygame.K_e:
-                    select_bonus()
+                if event.key == pygame.K_ESCAPE:
+                    main_menu()
     pygame.quit()
 
 def main_menu():
@@ -368,18 +368,16 @@ def main_menu():
     while run:
         WIN.blit(BG, (0, 0))
         doom_label = doom_font.render("DOOM", 1, (255, 0, 0))
-        title_label = title_font.render(
-            "Press the mouse to begin...", 1, (255, 255, 255))
-        select_label = second_font.render(
-            "Press A to select a ship.", 1, (255, 255, 255))
-        bonus_label = second_font.render(
-            "Press E to select bonuses.", 1, (255, 255, 255))
-        end_label = third_font.render(
-            "Press Esc to come back to main Menu", 1, (255, 255, 255))
+        title_label = title_font.render("Press the mouse to begin...", 1, (255, 255, 255))
+        select_label = second_font.render("Press A to select a ship.", 1, (255, 255, 255))
+        bonus_label = second_font.render("Press E to select bonuses.", 1, (255, 255, 255))
+        info_label = second_font.render("Press I to get Informations.", 1, (255, 255, 255))
+        end_label = third_font.render("Press Esc to come back to main Menu", 1, (255, 255, 255))
         WIN.blit(doom_label, (WIDTH/2 - doom_label.get_width()/2, 80))
         WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 250))
-        WIN.blit(select_label, (WIDTH/2 - select_label.get_width()/2, 400))
-        WIN.blit(bonus_label, (WIDTH/2 - bonus_label.get_width()/2, 550))
+        WIN.blit(select_label, (WIDTH/2 - select_label.get_width()/2, 350))
+        WIN.blit(bonus_label, (WIDTH/2 - bonus_label.get_width()/2, 450))
+        WIN.blit(info_label, (WIDTH/2 - info_label.get_width()/2, 550))
         WIN.blit(end_label, (WIDTH/2 - end_label.get_width()/2, 650))
         pygame.display.update()
         for event in pygame.event.get():
@@ -392,6 +390,8 @@ def main_menu():
                     select_ship()
                 if event.key == pygame.K_e:
                     select_bonus()
+                if event.key == pygame.K_i:
+                    info_menu()
     pygame.quit()
 
 
