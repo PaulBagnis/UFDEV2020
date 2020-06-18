@@ -60,7 +60,12 @@ def main():
     laser_vel = 5
 
     # ICI CONDITION POUR VAISSEAU CHOISI
-    player = Player(300, 630, YELLOW_SPACE_SHIP)
+    if select_ship_player == 2 :
+        player = Player(300, 630, YELLOW_SPACE_SHIP)
+    elif select_ship_player == 2 :
+        player = Player(300, 630, YELLOW_SPACE_SHIP)
+    else :
+        player = Player(300, 630, YELLOW_SPACE_SHIP)
 
     clock = pygame.time.Clock()
 
