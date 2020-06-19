@@ -7,7 +7,7 @@ WIDTH, HEIGHT = 750, 750
 
 # Declaration de la taille du screen
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Space Shooter Tutorial")
+pygame.display.set_caption("Space Doom")
 
 # Load images
 

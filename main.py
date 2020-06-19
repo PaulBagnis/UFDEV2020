@@ -120,7 +120,7 @@ def main():
             i = 0
             level += 1
             wave_length += 2
-            # Mettre tout ca dans un if pour les différents niveaux
+            # Gestion des niveaux
             if level % 3 == 0:
                 for i in range(wave_length):
                     random_chances = random.randrange(0, 100)
